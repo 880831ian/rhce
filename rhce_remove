@@ -1,0 +1,17 @@
+echo "############################################"
+echo -e "清除zone block:\e[32m`firewall-cmd --permanent --zone=block --remove-source='192.168.10.0/24'`\e[0m"
+echo -e "刷新:\e[32m`firewall-cmd --reload`\e[0m"
+echo -e "清除direct rules:\e[32m`firewall-cmd --permanent --direct --remove-rule ipv4 filter INPUT 0 -s 192.168.122.0/24 -p tcp --dport 22 -j REJEECT`\e[0m"
+echo -e "刷新:\e[32m`firewall-cmd --reload`\e[0m"
+echo -e  清除rich rules:`firewall-cmd --permanent --zone=public --remove-rich-rule "rule family="ipv4" source address="192.168.111.0/24" port port="22" protocol="tcp" reject"`
+echo -e "刷新:\e[32m`firewall-cmd --reload`\e[0m"
+echo -e "清除masquerade:\e[32m`firewall-cmd --permanent --remove-masquerade`\e[0m"
+echo -e "刷新:\e[32m`firewall-cmd --reload`\e[0m"
+YUM=`yum remove httpd -y`
+YUM=${YUM#*0:2.4.6-80.el7.centos\
+
+};
+YUM=${YUM%!*}
+echo -e "httpd remove:\e[32m${YUM}\e[0m" 
+echo -e "清除forward:\e[32m`firewall-cmd --permanent --remove-forward-port=port=5423:proto=tcp:toport=80`\e[0m"
+echo "############################################"
