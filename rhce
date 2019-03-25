@@ -1,0 +1,44 @@
+echo "#############################################"
+`setenforce 1`
+echo -e "SElinux set:\e[32m`getenforce`\e[0m";
+echo -e "block zone set:\e[32m`firewall-cmd --permanent --zone=block --add-source='192.168.10.0/24'`\e[0m" ;
+echo -e "block zone reload:\e[32m`firewall-cmd --reload`\e[0m" 2> /dev/null;
+blocklla=`firewall-cmd --zone=block --list-all`;
+blocklla=${blocklla#*sources\:}
+blocklla=${blocklla%\ser*}
+echo -e "firewall block list all:sources:\e[32m${blocklla}\e[0m";
+echo -e "direct rules set:\e[32m`firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -s 192.168.122.0/24 -p tcp --dport 22 -j REJEECT`\e[0m" 2> /dev/null
+echo -e "direct rules list:\e[32m`firewall-cmd --permanent --direct --get-all-rules`\e[0m"
+echo -e rich rules set:`firewall-cmd --permanent --zone=public --add-rich-rule "rule family="ipv4" source address="192.168.111.0/24" port port="22" protocol="tcp" reject"`
+echo -e "rich rules reload:\e[32m`firewall-cmd --reload`\e[0m" 2> /dev/null;
+echo -e "masquerading add:\e[32m`firewall-cmd --permanent --add-masquerade`\e[0m";
+masquer=`firewall-cmd --list-all`;
+masquer=${masquer#*masquerade\:};
+masquer=${masquer%forward*}
+echo -e "masquerading list:\e[32m${masquer}\e[0m"
+echo -e "masquerading set:\e[32m`firewall-cmd --permanent --add-forward-port=port=5423:proto=tcp:toport=80`\e[0m";
+echo -e "masquerading reload:\e[32m`firewall-cmd --reload`\e[0m" 2> /dev/null;
+echo "[dywang]
+name=De-Yu Wang
+baseurl=http://dywang.csie.cyut.edu.tw/centos7
+gpgcheck=0" > /etc/yum.repos.d/dywang.repo
+YUM=`yum install httpd -y`;
+YUM=${YUM#*el7.centos\
+
+};
+YUM=${YUM%!*}
+echo -e "httpd intstall:\e[32m${YUM}\e[0m" 
+`systemctl enable httpd.service`
+echo -e "enabel httpd:\e[32msuccess\e[0m"
+`systemctl start httpd.service`
+echo -e "start httpd:\e[32msuccess\e[0m"
+echo -e  'test' > /var/www/html/index.html
+echo "alias qstat='/bin/ps -Ao pid,tt,user,fname,rsz'" >> /etc/bashrc | tail -1
+echo "#############################################"
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                  
