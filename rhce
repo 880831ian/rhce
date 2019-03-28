@@ -33,12 +33,10 @@ echo -e "enabel httpd:\e[32msuccess\e[0m"
 `systemctl start httpd.service`
 echo -e "start httpd:\e[32msuccess\e[0m"
 echo -e  'test' > /var/www/html/index.html
-echo "alias qstat='/bin/ps -Ao pid,tt,user,fname,rsz'" >> /etc/bashrc | tail -1
+echo -e "alias qstat='/bin/ps -Ao pid,tt,user,fname,rsz'" | tee -a /etc/bashrc
+echo -e "alias list grep:\e[32m`alias | grep qstat`\e[0m"
+echo -e "nmcli add team0:`nmcli connection add type team con-name team0 ifname team0 confih '{"runner": {"name": "activebackup"}}'`\e[0m"
+
 echo "#############################################"
 ~                                                                                                                                                                                                                  
-~                                                                                                                                                                                                                  
-~                                                                                                                                                                                                                  
-~                                                                                                                                                                                                                  
-~                                                                                                                                                                                                                  
-~                                                                                                                                                                                                                  
-~                                                                  
+~                                                                                                                                
