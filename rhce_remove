@@ -13,5 +13,12 @@ YUM=${YUM#*0:2.4.6-80.el7.centos\
 };
 YUM=${YUM%!*}
 echo -e "httpd remove:\e[32m${YUM}\e[0m" 
+echo -e "重開httpd:\e[32m`systemctl restart httpd.service`\e[0m"
 echo -e "清除forward:\e[32m`firewall-cmd --permanent --remove-forward-port=port=5423:proto=tcp:toport=80`\e[0m"
+echo -e "清除team0:`nmcli connection remove type team con-name team0 ifname team0 confih '{"runner": {"name": "activebackup"}}'`\e[0m"
 echo "############################################"
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                                                                                                                                                                  
+~                                                                                                                                                   
