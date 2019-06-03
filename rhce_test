@@ -35,11 +35,13 @@ itype=vfat
 
 ###########################
 clear
-
 a="\e[32m";b="\e[0m";c="\e[31m";
 d="#####################################"
 login5="sshpass -p "123qwe" ssh -o strictHostKeyChecking=no root@kvm5.deyu.wang"
 login7="sshpass -p "123qwe" ssh -o strictHostKeyChecking=no root@kvm7.deyu.wang"
+
+$login5 'date | mail -s "test5" deyu2@kvm5.deyu.wang' ;
+$login7 'date | mail -s "test7" deyu2@kvm7.deyu.wang' ;
 echo ${d};
 echo "            rhce驗證腳本 "
 echo "驗證日期：${today} 驗證時間：${nowtime}"
@@ -212,7 +214,6 @@ var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
-$login5 'date | mail -s "test5" deyu2@kvm5.deyu.wang' ;
 cat /var/spool/mail/dywang | grep -o 'test5' 1>/dev/null
 if [ "$?" = "0" ];then
 echo -e "${num}_mail5:                    [${a}Success${b}]"
@@ -222,7 +223,6 @@ var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
-$login7 'date | mail -s "test7" deyu2@kvm7.deyu.wang';
 cat /var/spool/mail/dywang | grep -o 'test7' 1>/dev/null
 if [ "$?" = "0" ];then
 echo -e "${num}_mail7:                    [${a}Success${b}]"
@@ -230,7 +230,8 @@ else
 echo -e "${num}_mail7:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
-#cat /dev/null > /var/spool/mail/dywang
+cat /dev/null > /var/spool/mail/dywang
+
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'yum list installed' | grep samba 1>/dev/null
 if [ "$?" = "0" ];then
