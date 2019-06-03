@@ -259,6 +259,18 @@ echo -e "${num}_common:                   [${c}Error${b}]" | tee -a ${today}.log
 var=`expr $var - 1`;
 fi
 
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'cat /etc/samba/smb.conf' | grep DEYUGROUP 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_deyugroup:                [${a}Success${b}]"
+else
+echo -e "${num}_deyugroup:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'tail -n6 /etc/samba/smb.conf' | grep -o ${data} 1>/dev/null
 if [ "$?" = "0" ];then
