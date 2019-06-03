@@ -1,36 +1,36 @@
 today=`date +%Y%m%d`
 nowtime=`date +%T`
 name=`cat sid`
-ver=v0.7
-update=20190522
+ver=v0.8
+update=20190603
 #==================
-dynameicport=9181
-forwardport=1611
-ip111=175
-ip100=119
-ip10=146
-ip6k5=157
-ip6k7=128
-team5=69
-team7=20
-qstat=gstaaa
-common=combbb
-groupdir=mydir3
-data=kdataaa
-multi=mulaaa
-public=pubaaa
-protected=proaaa
-nfsmount=nfsaaa
-nfssecure=nfsbbb
-virtual=virbbb
-confidential=confqqq
-script1=/root/scripta
-script2=/root/scriptb
-iscsi_lv=iscsi_aaa
-iqn=iqn.2019-08.wang.deyu
-idata=iddd
-isize=9M    
-itype=ext3
+dynameicport=9182
+forwardport=1612
+ip111=172
+ip100=112
+ip10=142
+ip6k5=152
+ip6k7=122
+team5=62
+team7=22
+qstat=qstccc
+common=comccc
+groupdir=mydir4
+data=kdatc
+multi=mulc
+public=public
+protected=protec
+nfsmount=nfsm
+nfssecure=nfsc
+virtual=virc
+confidential=confc
+script1=/root/script1
+script2=/root/script2
+iscsi_lv=iscsi_c
+iqn=iqn.2019-06.wang.deyu
+idata=idcc
+isize=5M    
+itype=vfat
 
 
 ###########################
@@ -49,72 +49,72 @@ echo "-----------以下為驗證項目-----------"
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'cat /etc/selinux/config' | sed -n '7p'| grep -o enforcing 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_selinux5:${a}Success!${b}"
+echo -e "${num}_selinux5:                  [${a}Success${b}]"
 else
-echo -e "${num}_selinux5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_selinux5:                  [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'cat /etc/selinux/config' | sed -n '7p'| grep -o enforcing 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_selinux7:${a}Success!${b}"
+echo -e "${num}_selinux7:                  [${a}Success${b}]"
 else
-echo -e "${num}_selinux7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_selinux7:                  [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'firewall-cmd --permanent --zone=block --list-all' | sed -n '5p' | grep -o 192.168.${ip10}.0/24 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_block zone5:${a}Success!${b}"
+echo -e "${num}_block zone5:               [${a}Success${b}]"
 else
-echo -e "${num}_block zone5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_block zone5:               [${c}Error${b}"] | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'firewall-cmd --permanent --zone=block --list-all' | sed -n '5p' | grep -o 192.168.${ip10}.0/24 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_block zone7:${a}Success!${b}"
+echo -e "${num}_block zone7:               [${a}Success${b}]"
 else
-echo -e "${num}_block zone7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_block zone7:               [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'firewall-cmd --permanent --direct --get-all-rule' | grep -o 192.168.${ip100}.0/24 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_direct rules5:${a}Success!${b}"
+echo -e "${num}_direct rules5:             [${a}Success${b}]"
 else
-echo -e "${num}_direct rules5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_direct rules5:             [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'firewall-cmd --permanent --direct --get-all-rule' | grep -o 192.168.${ip100}.0/24 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_direct rules7:${a}Success!${b}"
+echo -e "${num}_direct rules7:             [${a}Success${b}]"
 else
-echo -e "${num}_direct rules7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_direct rules7:             [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'firewall-cmd --list-all' | grep -o 192.168.${ip111}.0/24 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_rich rules5:${a}Success!${b}"
+echo -e "${num}_rich rules5:               [${a}Success${b}]"
 else
-echo -e "${num}_rich rules5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_rich rules5:               [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'firewall-cmd --list-all' | grep -o 192.168.${ip111}.0/24 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_rich rules7:${a}Success!${b}"
+echo -e "${num}_rich rules7:               [${a}Success${b}]"
 else
-echo -e "${num}_rich rules7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_rich rules7:               [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
@@ -122,27 +122,27 @@ fi
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'firewall-cmd --list-forward-ports' | grep -o ${forwardport} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_forwardport5:${a}Success!${b}"
-else
-echo -e "${num}_forwardport5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_forwardport5:              [${a}Success${b}]"
+else 
+echo -e "${num}_forwardport5:              [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'firewall-cmd --list-forward-ports' | grep -o ${forwardport} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_forwardport7:${a}Success!${b}"
+echo -e "${num}_forwardport7:             [${a}Success${b}]"
 else
-echo -e "${num}_forwardport7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_forwardport7:             [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 curl http://kvm5.deyu.wang:${forwardport} >/dev/null 2>&1
 if [ "$?" = "0" ];then
-echo -e "${num}_masquerading5:${a}Success!${b}"
+echo -e "${num}_masquerading5:            [${a}Success${b}]"
 else
-echo -e "${num}_masquerading5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_masquerading5:            [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
@@ -150,18 +150,18 @@ fi
 var=`expr $var + 1`;num=`expr $num + 1`;
 curl http://kvm5.deyu.wang:${forwardport} >/dev/null 2>&1
 if [ "$?" = "0" ];then
-echo -e "${num}_masquerading7:${a}Success!${b}"
+echo -e "${num}_masquerading7:            [${a}Success${b}]"
 else
-echo -e "${num}_masquerading7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_masquerading7:            [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'cat /etc/bashrc' | grep -o ${qstat} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_qstat5:${a}Success!${b}"
+echo -e "${num}_qstat5:                   [${a}Success${b}]"
 else
-echo -e "${num}_qstat5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_qstat5:                   [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
@@ -169,45 +169,45 @@ fi
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'cat /etc/bashrc' | grep -o ${qstat} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_qstat7:${a}Success!${b}"
+echo -e "${num}_qstat7:                   [${a}Success${b}]"
 else
-echo -e "${num}_qstat7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_qstat7:                   [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'ifconfig team0' | grep -o 192.168.122.${team5} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_team5:${a}Success!${b}"
+echo -e "${num}_team5:                    [${a}Success${b}]"
 else
-echo -e "${num}_team5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_team5:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'ifconfig team0' | grep -o 192.168.122.${team7} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_team7:${a}Success!${b}"
+echo -e "${num}_team7:                    [${a}Success${b}]"
 else
-echo -e "${num}_team7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_team7:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'nmcli connection show eth0' | egrep -i ipv?6 | grep -o 2001:ac18::${ip6k5}/64 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_ip6k5:${a}Success!${b}"
+echo -e "${num}_ip6k5:                    [${a}Success${b}]"
 else
-echo -e "${num}_ip6k5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_ip6k5:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'nmcli connection show eth0' | egrep -i ipv?6 | grep -o 2001:ac18::${ip6k7}/64 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_ip6k7:${a}Success!${b}"
+echo -e "${num}_ip6k7:                    [${a}Success${b}]"
 else
-echo -e "${num}_ip6k7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_ip6k7:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
@@ -215,9 +215,9 @@ var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'date | mail -s "test5" deyu2@kvm5.deyu.wang' ;
 cat /var/spool/mail/dywang | grep -o 'test5' 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_mail5:${a}Success!${b}"
+echo -e "${num}_mail5:                    [${a}Success${b}]"
 else
-echo -e "${num}_mail5:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_mail5:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
@@ -225,43 +225,43 @@ var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'date | mail -s "test7" deyu2@kvm7.deyu.wang';
 cat /var/spool/mail/dywang | grep -o 'test7' 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_mail7:${a}Success!${b}"
+echo -e "${num}_mail7:                    [${a}Success${b}]"
 else
-echo -e "${num}_mail7:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_mail7:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 #cat /dev/null > /var/spool/mail/dywang
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'yum list installed' | grep samba 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_samba:${a}Success!${b}"
+echo -e "${num}_samba:                    [${a}Success${b}]"
 else
-echo -e "${num}_samba:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_samba:                    [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'grep "^[^#\;]" /etc/samba/smb.conf' | grep -o /${groupdir} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_groupdir:${a}Success!${b}"
+echo -e "${num}_groupdir:                 [${a}Success${b}]"
 else
-echo -e "${num}_groupdir:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_groupdir:                 [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'grep "^[^#\;]" /etc/samba/smb.conf' | grep -o ${common} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_common:${a}Success!${b}"
+echo -e "${num}_common:                   [${a}Success${b}]"
 else
-echo -e "${num}_common:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_common:                   [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'tail -n6 /etc/samba/smb.conf' | grep -o ${data} 1>/dev/null
 if [ "$?" = "0" ];then
-echo -e "${num}_data:${a}Success!${b}"
+echo -e "${num}_data:                     [${a}Success${b}]"
 else
 echo -e "${num}_data:${c}Error!${b}" | tee -a ${today}.log;
 var=`expr $var - 1`;
@@ -795,6 +795,3 @@ echo "score：${score1}" | tee -a ${today}.log;
 fi
 echo time:${nowtime}  | tee -a ${today}.log
 echo ${d} | tee -a ${today}.log;
-
-
-
