@@ -1,8 +1,8 @@
 today=`date +%Y%m%d`
 nowtime=`date +%T`
 name=`cat sid`
-ver=v0.8
-update=20190603
+ver=v0.9
+update=20190606
 #==================
 dynameicport=9182
 forwardport=1612
@@ -35,6 +35,7 @@ itype=vfat
 
 ###########################
 clear
+
 a="\e[32m";b="\e[0m";c="\e[31m";
 d="#####################################"
 login5="sshpass -p "123qwe" ssh -o strictHostKeyChecking=no root@kvm5.deyu.wang"
@@ -258,7 +259,6 @@ else
 echo -e "${num}_common:                   [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
-
 
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'cat /etc/samba/smb.conf' | grep DEYUGROUP 1>/dev/null
@@ -591,6 +591,9 @@ echo -e "${num}_scrip1_notfile7:          [${c}Error${b}]" | tee -a ${today}.log
 var=`expr $var - 1`;
 fi
 
+$login5 "[ -e "ulist.txt" ] ||  wget -q http://dywang.csie.cyut.edu.tw/materials/ulist.txt" 1>/dev/null
+$login7 "[ -e "ulist.txt" ] || wget -q http://dywang.csie.cyut.edu.tw/materials/ulist.txt" 1>/dev/null
+
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'for u in $(cat ulist.txt);do getent passwd $u;done' | egrep "(linda|peter|rita)" 1>/dev/null
 if [ "$?" = "0" ];then
@@ -681,9 +684,6 @@ echo -e "${num}_iscsi_lv:                 [${c}Error${b}]" | tee -a ${today}.log
 var=`expr $var - 1`;
 fi
 
-
-
-
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login7 'df -Th' | grep -o ${idata} 1>/dev/null
 if [ "$?" = "0" ];then
@@ -741,14 +741,14 @@ echo -e "${num}_mariadb_contacts:         [${c}Error${b}]" | tee -a ${today}.log
 var=`expr $var - 1`;
 fi
 
-#var=`expr $var + 1`;num=`expr $num + 1`;
-#$login5 "mysql -uroot -pqweqwe -e 'use mysql;select * from mysql.db where db='Contacts'\G;'" | grep "Select_priv: Y"
-#if [ "$?" = "0" ];then
-#echo -e "${num}_mariadb_dywang:${a}Success!${b}"
-#else
-#echo -e "${num}_mariadb_dywang:${c}Error!${b}" | tee -a ${today}.log;
-#var=`expr $var - 1`;
-#fi
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "mysql -uroot -pqweqwe -e 'use mysql;select * from mysql.db where db=\"Contacts\"\G'" | grep "Select_priv: Y" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_mariadb_dywang:           [${a}Success${b}]"
+else
+echo -e "${num}_mariadb_dywang:           [${c}Error${b}"] | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
 
 
 var=`expr $var + 1`;num=`expr $num + 1`;
