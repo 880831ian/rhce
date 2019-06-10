@@ -270,14 +270,21 @@ echo -e "${num}_deyugroup:                [${c}Error${b}]" | tee -a ${today}.log
 var=`expr $var - 1`;
 fi
 
-
-
 var=`expr $var + 1`;num=`expr $num + 1`;
 $login5 'tail -n6 /etc/samba/smb.conf' | grep -o ${data} 1>/dev/null
 if [ "$?" = "0" ];then
 echo -e "${num}_data:                     [${a}Success${b}]"
 else
-echo -e "${num}_data:${c}Error!${b}" | tee -a ${today}.log;
+echo -e "${num}_data:                     [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'tail -n6 /etc/samba/smb.conf' | grep -o "dywsmb" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_dywsmb:                   [${a}Success${b}]"
+else
+echo -e "${num}_dywsmb:                   [${c}Error${b}]" | tee -a ${today}.log;
 var=`expr $var - 1`;
 fi
 
@@ -454,6 +461,7 @@ if [ "$?" = "45" ];then
 echo -e "${num}_curl-192.168.19.7:        [${a}Success${b}]"
 else
 echo -e "${num}_curl-192.168.19.7:        [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "kvm7將192.168.19.7改為無法通過"
 var=`expr $var - 1`;
 fi
 
