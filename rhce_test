@@ -1,35 +1,36 @@
 today=`date +%Y%m%d`
 nowtime=`date +%T`
 name=`cat sid`
-ver=v0.9
-update=20190606
+ver=v0.10
+update=20190610
 #==================
-dynameicport=9182
-forwardport=1612
-ip111=172
-ip100=112
-ip10=142
-ip6k5=152
-ip6k7=122
-team5=62
-team7=22
-qstat=qstccc
-common=comccc
-groupdir=mydir4
-data=kdatc
-multi=mulc
-public=public
-protected=protec
-nfsmount=nfsm
-nfssecure=nfsc
-virtual=virc
-confidential=confc
-script1=/root/script1
-script2=/root/script2
-iscsi_lv=iscsi_c
-iqn=iqn.2019-06.wang.deyu
-idata=idcc
-isize=5M    
+dynameicport=9183
+forwardport=1613
+ip111=173
+ip100=113
+ip10=143
+ip6k5=153
+ip6k7=123
+team5=63
+team7=23
+qstat=qstyy
+common=comyy
+groupdir=mydir
+deyugroup=DEYUGRP
+data=kdaty
+multi=muly
+public=publiy
+protected=protey
+nfsmount=nfsmy
+nfssecure=nfscy
+virtual=vircy
+confidential=confcy
+script1=/root/script3
+script2=/root/script4
+iscsi_lv=iscsi_y
+iqn=iqn.2019-07.wang.deyu
+idata=idcy
+isize=9M    
 itype=vfat
 
 
@@ -261,7 +262,7 @@ var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
-$login5 'cat /etc/samba/smb.conf' | grep DEYUGROUP 1>/dev/null
+$login5 'cat /etc/samba/smb.conf' | grep -o ${deyugroup}  1>/dev/null
 if [ "$?" = "0" ];then
 echo -e "${num}_deyugroup:                [${a}Success${b}]"
 else
