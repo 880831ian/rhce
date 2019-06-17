@@ -1,7 +1,7 @@
 today=`date +%Y%m%d`
 nowtime=`date +%T`
 name=`cat sid`
-ver=v0.11
+ver=v0.12
 update=20190617
 #==================
 dynameicport=9184
@@ -213,7 +213,7 @@ var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
-$login5 'nmcli connection show eth0' | egrep -i ipv?6 | grep -o 2001:ac18::${ip6k5}/64 1>/dev/null
+$login5 "ping6 -c1 2001:ac18::${ip6k5}" 1>/dev/null
 if [ "$?" = "0" ];then
 echo -e "${num}_ip6k5:                    [${a}Success${b}]"
 else
@@ -223,7 +223,7 @@ var=`expr $var - 1`;
 fi
 
 var=`expr $var + 1`;num=`expr $num + 1`;
-$login7 'nmcli connection show eth0' | egrep -i ipv?6 | grep -o 2001:ac18::${ip6k7}/64 1>/dev/null
+$login7 "ping6 -c1 2001:ac18::${ip6k7}" 1>/dev/null
 if [ "$?" = "0" ];then
 echo -e "${num}_ip6k7:                    [${a}Success${b}]"
 else
@@ -815,7 +815,8 @@ if test $var -eq $num
 then echo -e "通過題數：(${a}${var}${b}/${num})" | tee -a ${today}.log;
 echo -e "score：100" | tee -a ${today}.log;
 else echo -e "通過題數：(${c}${var}${b}/${num})" | tee -a ${today}.log;
-echo "score：${score1}" | tee -a ${today}.log;
+echo "Score：${score1}" | tee -a ${today}.log;
 fi
-echo time:${nowtime}  | tee -a ${today}.log
+echo Time:${nowtime}  | tee -a ${today}.log
 echo ${d} | tee -a ${today}.log;
+
