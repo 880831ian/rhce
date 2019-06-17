@@ -1,37 +1,37 @@
 today=`date +%Y%m%d`
 nowtime=`date +%T`
 name=`cat sid`
-ver=v0.10
-update=20190610
+ver=v0.11
+update=20190617
 #==================
-dynameicport=9183
-forwardport=1613
-ip111=173
-ip100=113
-ip10=143
-ip6k5=153
-ip6k7=123
-team5=63
-team7=23
-qstat=qstyy
-common=comyy
-groupdir=mydir
-deyugroup=DEYUGRP
-data=kdaty
-multi=muly
-public=publiy
-protected=protey
-nfsmount=nfsmy
-nfssecure=nfscy
-virtual=vircy
-confidential=confcy
-script1=/root/script3
-script2=/root/script4
-iscsi_lv=iscsi_y
-iqn=iqn.2019-07.wang.deyu
-idata=idcy
-isize=9M    
-itype=vfat
+dynameicport=9184
+forwardport=1614
+ip111=174
+ip100=114
+ip10=144
+ip6k5=154
+ip6k7=124
+team5=64
+team7=24
+qstat=qstzz
+common=comzz
+groupdir=mydirz
+deyugroup=DEZZGRP
+data=kdatz
+multi=mulz
+public=publiz
+protected=protez
+nfsmount=nfsmz
+nfssecure=nfscz
+virtual=vircz
+confidential=confcz
+script1=/root/script5
+script2=/root/script6
+iscsi_lv=iscsi_z
+iqn=iqn.2019-02.wang.deyu
+idata=idcz
+isize=11M    
+itype=ext3
 
 
 ###########################
@@ -819,4 +819,3 @@ echo "score：${score1}" | tee -a ${today}.log;
 fi
 echo time:${nowtime}  | tee -a ${today}.log
 echo ${d} | tee -a ${today}.log;
-
