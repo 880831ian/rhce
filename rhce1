@@ -1,0 +1,821 @@
+today=`date +%Y%m%d`
+nowtime=`date +%T`
+name=`cat sid`
+ver=v0.13
+update=20190624
+#==================
+dynameicport=9185
+forwardport=1615
+ip111=175
+ip100=115
+ip10=145
+ip6k5=155
+ip6k7=125
+team5=65
+team7=25
+qstat=qstkk
+common=comkk
+groupdir=mydirk
+deyugroup=DEKKGRP
+data=kdatk
+multi=mulk
+public=publik
+protected=protek
+nfsmount=nfsmk
+nfssecure=nfsck
+virtual=virck
+confidential=confck
+script1=/root/script7
+script2=/root/script8
+iscsi_lv=iscsi_k
+iqn=iqn.2019-05.wang.deyu
+idata=idck
+isize=9M    
+itype=vfat
+
+
+###########################
+clear
+
+a="\e[32m";b="\e[0m";c="\e[31m";
+d="#####################################"
+login5="sshpass -p "123qwe" ssh -o strictHostKeyChecking=no root@kvm5.deyu.wang"
+login7="sshpass -p "123qwe" ssh -o strictHostKeyChecking=no root@kvm7.deyu.wang"
+
+$login5 'date | mail -s "test5" deyu2@kvm5.deyu.wang' ;
+$login7 'date | mail -s "test7" deyu2@kvm7.deyu.wang' ;
+echo ${d};
+echo "            rhce驗證腳本 "
+echo "驗證日期：${today} 驗證時間：${nowtime}"
+echo " 目前驗證人員:${name}";
+echo "使用版本：${ver} 最後修改日期：${update}"
+echo "-----------以下為驗證項目-----------"
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'cat /etc/selinux/config' | sed -n '7p'| grep -o enforcing 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_selinux5:                  [${a}Success${b}]"
+else
+echo -e "${num}_selinux5:                  [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm5 修改/etc/selinux/config /setenforce 1"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'cat /etc/selinux/config' | sed -n '7p'| grep -o enforcing 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_selinux7:                  [${a}Success${b}]"
+else
+echo -e "${num}_selinux7:                  [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm7 修改/etc/selinux/config /setenforce 1"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --permanent --zone=block --list-all' | sed -n '5p' | grep -o 192.168.${ip10}.0/24 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_block zone5:               [${a}Success${b}]"
+else
+echo -e "${num}_block zone5:               [${c}Error${b}"] | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 firewall block ip 修改為 ${ip10} "
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'firewall-cmd --permanent --zone=block --list-all' | sed -n '5p' | grep -o 192.168.${ip10}.0/24 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_block zone7:               [${a}Success${b}]"
+else
+echo -e "${num}_block zone7:               [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 firewall block ip 修改為 ${ip10} "
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --permanent --direct --get-all-rule' | grep -o 192.168.${ip100}.0/24 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_direct rules5:             [${a}Success${b}]"
+else
+echo -e "${num}_direct rules5:             [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 firewall direct rule ip 修改為 ${ip100} "
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'firewall-cmd --permanent --direct --get-all-rule' | grep -o 192.168.${ip100}.0/24 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_direct rules7:             [${a}Success${b}]"
+else
+echo -e "${num}_direct rules7:             [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 firewall direct rule ip 修改為 ${ip100} "
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | grep -o 192.168.${ip111}.0/24 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_rich rules5:               [${a}Success${b}]"
+else
+echo -e "${num}_rich rules5:               [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 firewall rich rule ip 修改為 ${ip111} "
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'firewall-cmd --list-all' | grep -o 192.168.${ip111}.0/24 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_rich rules7:               [${a}Success${b}]"
+else
+echo -e "${num}_rich rules7:               [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 firewall rich rule ip 修改為 ${ip111} "
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-forward-ports' | grep -o ${forwardport} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_forwardport5:              [${a}Success${b}]"
+else 
+echo -e "${num}_forwardport5:              [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 firewall port 修改為 ${forwardport} "
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'firewall-cmd --list-forward-ports' | grep -o ${forwardport} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_forwardport7:             [${a}Success${b}]"
+else
+echo -e "${num}_forwardport7:             [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 firewall port 修改為 ${forwardport} "
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+curl http://kvm5.deyu.wang:${forwardport} >/dev/null 2>&1
+if [ "$?" = "0" ];then
+echo -e "${num}_masquerading5:            [${a}Success${b}]"
+else
+echo -e "${num}_masquerading5:            [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 web test 改為主畫面"
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+curl http://kvm7.deyu.wang:${forwardport} >/dev/null 2>&1
+if [ "$?" = "0" ];then
+echo -e "${num}_masquerading7:            [${a}Success${b}]"
+else
+echo -e "${num}_masquerading7:            [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 port forwarding test 改為主畫面"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'cat /etc/bashrc' | grep -o ${qstat} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_qstat5:                   [${a}Success${b}]"
+else
+echo -e "${num}_qstat5:                   [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 /etc/bashrc 新增 ${qstat}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'cat /etc/bashrc' | grep -o ${qstat} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_qstat7:                   [${a}Success${b}]"
+else
+echo -e "${num}_qstat7:                   [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 /etc/bashrc 新增 ${qstat}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'ifconfig team0' | grep -o 192.168.122.${team5} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_team5:                    [${a}Success${b}]"
+else
+echo -e "${num}_team5:                    [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 team0 ipv4 新增 ${team5}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'ifconfig team0' | grep -o 192.168.122.${team7} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_team7:                    [${a}Success${b}]"
+else
+echo -e "${num}_team7:                    [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 team0 ipv4 新增 ${team5}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "ping6 -c1 2001:ac18::${ip6k5}" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_ip6k5:                    [${a}Success${b}]"
+else
+echo -e "${num}_ip6k5:                    [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 team0 ipv6 新增 ${ip6k5}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "ping6 -c1 2001:ac18::${ip6k7}" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_ip6k7:                    [${a}Success${b}]"
+else
+echo -e "${num}_ip6k7:                    [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 team0 ipv6 新增 ${ip6k7}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+cat /var/spool/mail/dywang | grep -o 'test5' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_mail5:                    [${a}Success${b}]"
+else
+echo -e "${num}_mail5:                    [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 postfix 設定 /etc/postfix/main.cf"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+cat /var/spool/mail/dywang | grep -o 'test7' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_mail7:                    [${a}Success${b}]"
+else
+echo -e "${num}_mail7:                    [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 7 postfix 設定 /etc/postfix/main.cf"
+var=`expr $var - 1`;
+fi
+cat /dev/null > /var/spool/mail/dywang
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'yum list installed' | grep samba 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_samba:                    [${a}Success${b}]"
+else
+echo -e "${num}_samba:                    [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 安裝 samba"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'grep "^[^#\;]" /etc/samba/smb.conf' | grep -o /${groupdir} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_groupdir:                 [${a}Success${b}]"
+else
+echo -e "${num}_groupdir:                 [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 將groupdir名稱修改為 ${groupdir}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'grep "^[^#\;]" /etc/samba/smb.conf' | grep -o ${common} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_common:                   [${a}Success${b}]"
+else
+echo -e "${num}_common:                   [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 將common 名稱修改為 ${common}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'cat /etc/samba/smb.conf' | grep -o ${deyugroup}  1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_deyugroup:                [${a}Success${b}]"
+else
+echo -e "${num}_deyugroup:                [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 將群組名稱修改為 ${deyugroup}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'tail -n6 /etc/samba/smb.conf' | grep -o ${data} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_data:                     [${a}Success${b}]"
+else
+echo -e "${num}_data:                     [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 將data 名稱修改為 ${data}"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'id deyu3' | grep -o "dywsmb" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_dywsmb:                   [${a}Success${b}]"
+else
+echo -e "${num}_dywsmb:                   [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 將deyu3 加入dywsmb 群組"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | grep -o samba 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-samba:           [${a}Success${b}]"
+else
+echo -e "${num}_firewall-samba:           [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：將kvm 5 將 firewall 新增 samba"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "mount -o multiuser,sec=ntlmssp,username=deyu2,password=123qwe //kvm5.deyu.wang/${data} /mnt/${multi}"
+if [ "$?" = "0" ];then
+echo -e "${num}_multi:                    [${a}Success${b}]"
+$login7 "umount /mnt/${multi}"
+else
+echo -e "${num}_multi:                    [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'cat /etc/fstab' | grep -o ${multi} 1>/dev/null
+$login7 'mount -a'
+if [ "$?" = "0" ];then
+echo -e "${num}_auto-multi:               [${a}Success${b}]"
+$login7 "umount /mnt/${multi}"
+else
+echo -e "${num}_auto-multi:               [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'exportfs -arv' | sed -n '1p' | grep -o ${public} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_public:                   [${a}Success${b}]"
+else
+echo -e "${num}_public:                   [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'exportfs -arv' | sed -n '2p' | grep -o ${protected} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_protected:                [${a}Success${b}]"
+else
+echo -e "${num}_protected:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'cat /etc/fstab' | grep -o ${nfsmount} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_nfsmount:                 [${a}Success${b}]"
+else
+echo -e "${num}_nfsmount:                 [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'cat /etc/fstab' | grep -o ${nfssecure} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_nfssecure:                [${a}Success${b}]"
+else
+echo -e "${num}_nfssecure:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | grep -o kerberos 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-kerberos:        [${a}Success${b}]"
+else
+echo -e "${num}_firewall-kerberos:        [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | grep -o nfs 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-nfs:             [${a}Success${b}]"
+else
+echo -e "${num}_firewall-nfs:             [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | grep -o 'rpc-bind' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-rpc:             [${a}Success${b}]"
+else
+echo -e "${num}_firewall-rpc:             [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | grep -o mountd 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-mountd:          [${a}Success${b}]"
+else
+echo -e "${num}_firewall-mountd:          [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | sed -n '7p' | grep -o '749/tcp' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-ports749:        [${a}Success${b}]"
+else
+echo -e "${num}_firewall-prots749:        [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | sed -n '7p' | grep -o '464/tcp' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-ports464:        [${a}Success${b}]"
+else
+echo -e "${num}_firewall-prots464:        [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'yum list installed' | grep -o 'httpd' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_httpd:                    [${a}Success${b}]"
+else
+echo -e "${num}_httpd:                    [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'cat /etc/httpd/conf/httpd.conf' | grep -o 'Require ip 192.168.122' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_httpd.conf:               [${a}Success${b}]"
+else
+echo -e "${num}_httpd.conf:               [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all'| sed -n '6p' | grep -o 'https' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_https:                    [${a}Success${b}]"
+else
+echo -e "${num}_https:                    [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+curl -s http://kvm5.deyu.wang 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_curl-http:                [${a}Success${b}]"
+else
+echo -e "${num}_curl-http:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'curl --interface 192.168.122.7 http://kvm5.deyu.wang -s'1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_curl-192.168.122.7:       [${a}Success${b}]"
+else
+echo -e "${num}_curl-192.168.122.7:       [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'curl --interface 192.168.19.7 http://kvm5.deyu.wang -s' 2>/dev/null
+if [ "$?" = "45" ];then
+echo -e "${num}_curl-192.168.19.7:        [${a}Success${b}]"
+else
+echo -e "${num}_curl-192.168.19.7:        [${c}Error${b}]" | tee -a ${today}.log;
+echo -e "解決方式：kvm7 192.168.19.7 改為無法通過"
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'curl --cacert /etc/pki/tls/certs/server-chain.crt https://kvm5.deyu.wang/ -s' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_curl-https5:              [${a}Success${b}]"
+else
+echo -e "${num}_curl-https5:              [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'curl --cacert kvm5.pem https://kvm5.deyu.wang -s' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_curl-https7:              [${a}Success${b}]"
+else
+echo -e "${num}_curl-https7:              [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'cat /etc/httpd/conf/httpd.conf' | grep -o /var/www/${virtual} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_virtual:                  [${a}Success${b}]"
+else
+echo -e "${num}_virtual:                  [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'curl http://kvm5.deyu.wang -s' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_virtual-kvm5:             [${a}Success${b}]"
+else
+echo -e "${num}_virtual-kvm5:             [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'curl http://www5.deyu.wang -s' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_virtual-www5:             [${a}Success${b}]"
+else
+echo -e "${num}_virtual-www5:             [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all'| sed -n '7p' | grep -o ${dynameicport} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_dynameicport:             [${a}Success${b}]"
+else
+echo -e "${num}_dynameicport:             [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "curl http://dynamic5.deyu.wang:${dynameicport}/ -s"  | grep '192.168.122.5' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_dynameic5:                [${a}Success${b}]"
+else
+echo -e "${num}_dynameic5:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "curl http://dynamic5.deyu.wang:${dynameicport}/ -s"  | grep '192.168.122.7' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_dynameic7:                [${a}Success${b}]"
+else
+echo -e "${num}_dynameic7:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "cat /etc/httpd/conf/httpd.conf"  | grep "/var/www/html/${confidential}" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_confidential:             [${a}Success${b}]"
+else
+echo -e "${num}_confidential:             [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "curl http://kvm5.deyu.wang/$confidential/ -s"  | grep 'private test' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_confidential5:            [${a}Success${b}]"
+else
+echo -e "${num}_confidential5:            [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "curl  curl http://kvm5.deyu.wang/$confidential/ -s" | grep -o 'permission to access' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_confidential7:            [${a}Success${b}]"
+else
+echo -e "${num}_confidential7:            [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "sh ${script1}" | grep "Usage: ${script1} <userfile>" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip1_notarg5:           [${a}Success${b}]"
+else
+echo -e "${num}_scrip1_notarg5:           [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "sh ${script1}" | grep "Usage: ${script1} <userfile>" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip1_notarg7:           [${a}Success${b}]"
+else
+echo -e "${num}_scrip1_notarg7:           [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "sh ${script1} 123456" | grep "Input file not found" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip1_notfile5:          [${a}Success${b}]"
+else
+echo -e "${num}_scrip1_notfile5:          [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "sh ${script1} 123456" | grep "Input file not found" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip1_notfile7:          [${a}Success${b}]"
+else
+echo -e "${num}_scrip1_notfile7:          [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+$login5 "[ -e "ulist.txt" ] ||  wget -q http://dywang.csie.cyut.edu.tw/materials/ulist.txt" 1>/dev/null
+$login7 "[ -e "ulist.txt" ] || wget -q http://dywang.csie.cyut.edu.tw/materials/ulist.txt" 1>/dev/null
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'for u in $(cat ulist.txt);do getent passwd $u;done' | egrep "(linda|peter|rita)" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip1_useradd5:          [${a}Success${b}]"
+else
+echo -e "${num}_scrip1_useradd5:          [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'for u in $(cat ulist.txt);do getent passwd $u;done' | egrep "(linda|peter|rita)" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip1_useradd7:          [${a}Success${b}]"
+else
+echo -e "${num}_scrip1_useradd7:          [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "sh ${script2} user " | grep "kernel" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip2_user2kernel5:      [${a}Success${b}]"
+else
+echo -e "${num}_scrip2_user2kernel5:      [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "sh ${script2} user " | grep "kernel" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip2_user2kernel7:      [${a}Success${b}]"
+else
+echo -e "${num}_scrip2_user2kernel7:      [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "sh ${script2} kernel " | grep "user" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip2_kernel2user5:      [${a}Success${b}]"
+else
+echo -e "${num}_scrip2_kernel2user5:      [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "sh ${script2} kernel " | grep "user" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_scrip2_kernel2user7:      [${a}Success${b}]"
+else
+echo -e "${num}_scrip2_kernel2user7:      [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'yum list installed' |  grep -o 'targetcli' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_targetcli:                [${a}Success${b}]"
+else
+echo -e "${num}_targetcli:                [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'firewall-cmd --list-all' | grep -o '3260/tcp' 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_firewall-ports3260:       [${a}Success${b}]"
+else
+echo -e "${num}_firewall-prots3260:       [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'cat /etc/iscsi/initiatorname.iscsi' | grep -o ${iqn} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_iqn:                      [${a}Success${b}]"
+else
+echo -e "${num}_iqn:                      [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'lsblk' | grep -o ${iscsi_lv} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_iscsi_lv:                 [${a}Success${b}]"
+else
+echo -e "${num}_iscsi_lv:                 [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'df -Th' | grep -o ${idata} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_idata:                    [${a}Success${b}]"
+else
+echo -e "${num}_idata:                    [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 "lsblk /dev/sda" | tail -1 | gawk '{ printf $4 }' | grep -o ${isize} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_isize:                    [${a}Success${b}]"
+else
+echo -e "${num}_isize:                    [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login7 'cat /etc/fstab' | tail -2 | grep -o ${itype} 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_itype:                    [${a}Success${b}]"
+else
+echo -e "${num}_itype:                    [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'mysql -uroot -pqweqwe -e "exit"';
+if [ "$?" = "0" ];then
+echo -e "${num}_mariadb_rootpw:           [${a}Success${b}]"
+else
+echo -e "${num}_mariadb_rootpw:           [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'cat /etc/my.cnf' | grep -o "skip-networking=1" 1>/dev/null;
+if [ "$?" = "0" ];then
+echo -e "${num}_mariadb_skip_network:     [${a}Success${b}]"
+else
+echo -e "${num}_mariadb_skip_network:     [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'mysql -uroot -pqweqwe -e "use Contacts;show tables;"'  1>/dev/null;
+if [ "$?" = "0" ];then
+echo -e "${num}_mariadb_contacts:         [${a}Success${b}]"
+else
+echo -e "${num}_mariadb_contacts:         [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 "mysql -uroot -pqweqwe -e 'use mysql;select * from mysql.db where db=\"Contacts\"\G'" | grep "Select_priv: Y" 1>/dev/null
+if [ "$?" = "0" ];then
+echo -e "${num}_mariadb_dywang:           [${a}Success${b}]"
+else
+echo -e "${num}_mariadb_dywang:           [${c}Error${b}"] | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'echo "2 1 2 1 1 0 2 2 0" | tee  query1.txt' 1>/dev/null;
+$login5 'diff /root/query1.txt /tmp/query1.txt';
+if [ "$?" = "0" ];then
+echo -e "${num}_mariadb_query1:           [${a}Success${b}]"
+else
+echo -e "${num}_mariadb_query1:           [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+var=`expr $var + 1`;num=`expr $num + 1`;
+$login5 'echo "Judy Sue Lutz Schmith Vaughan Ward Tobias Tim" | tee query2.txt' 1>/dev/null;
+$login5 'diff /root/query2.txt /tmp/query2.txt';
+if [ "$?" = "0" ];then
+echo -e "${num}_mariadb_query2:           [${a}Success${b}]"
+else
+echo -e "${num}_mariadb_query2:           [${c}Error${b}]" | tee -a ${today}.log;
+var=`expr $var - 1`;
+fi
+
+
+
+echo ${d} | tee -a ${today}.log;
+score=$(awk "BEGIN{printf $var/$num }");
+score1=$(awk "BEGIN{print $score*100}");
+if test $var -eq $num
+then echo -e "通過題數：(${a}${var}${b}/${num})" | tee -a ${today}.log;
+echo -e "score：100" | tee -a ${today}.log;
+else echo -e "通過題數：(${c}${var}${b}/${num})" | tee -a ${today}.log;
+echo "Score：${score1}" | tee -a ${today}.log;
+fi
+echo Time:${nowtime}  | tee -a ${today}.log
+echo ${d} | tee -a ${today}.log;
